@@ -3,4 +3,4 @@ import { authenticatedRoute } from "@/lib/redirects";
 
 export const getServerSideProps: GetServerSideProps = authenticatedRoute;
 
-export { EditProfile as default } from "@/components/Profile/Edit/EditProfile";
+export { EditProfile as default } from "@/components/EditProfile/EditProfile";

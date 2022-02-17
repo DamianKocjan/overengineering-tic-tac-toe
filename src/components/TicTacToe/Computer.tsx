@@ -23,7 +23,7 @@ export function Computer() {
 		} else if (squares.every((square) => square !== SquareState.Empty)) {
 			setIsTie(true);
 		}
-	}, [xIsNext]);
+	}, [squares, xIsNext]);
 
 	const calculateWinner = (squares: SquareState[]) => {
 		for (let i = 0; i < COMBINATIONS.length; i++) {
