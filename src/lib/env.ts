@@ -4,9 +4,6 @@ type NameToType = {
 	readonly NODE_ENV: "production" | "development";
 
 	// -- db --
-	readonly POSTGRES_USER: string;
-	readonly POSTGRES_PASSWORD: string;
-	readonly POSTGRES_DB: string;
 	readonly DATABASE_URL: string;
 
 	// -- auth --
