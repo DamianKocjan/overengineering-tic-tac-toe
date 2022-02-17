@@ -16,6 +16,7 @@
 		"codegen:schema": "ts-node --project ./prisma/tsconfig.json --transpile-only -r tsconfig-paths/register ./src/graphql/index.ts",
 		"codegen:graphql": "graphql-codegen",
 		"clean:codegen": "trash \"./src/**/__generated__/**\"",
+		"prettier:check": "prettier --check --config ./.prettierrc ./**/*.{ts,tsx,js,jsx}",
 		"pre-commit": "lint-staged"
 	},
 	"dependencies": {
