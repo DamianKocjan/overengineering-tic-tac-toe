@@ -1,0 +1,90 @@
+{
+	"name": "tic-tac-toe",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"postinstall": "prisma generate",
+		"prepare": "husky install",
+		"eslint": "eslint --ext .js,.jsx,.ts,.tsx --fix .",
+		"tsc": "tsc --noEmit",
+		"studio": "prisma studio",
+		"migrate": "prisma migrate",
+		"codegen": "npm run codegen:schema && npm run codegen:graphql",
+		"codegen:schema": "ts-node --project ./prisma/tsconfig.json --transpile-only -r tsconfig-paths/register ./src/graphql/index.ts",
+		"codegen:graphql": "graphql-codegen",
+		"clean:codegen": "trash \"./src/**/__generated__/**\"",
+		"pre-commit": "lint-staged"
+	},
+	"dependencies": {
+		"@apollo/client": "^3.5.8",
+		"@hookform/resolvers": "^2.8.8",
+		"@next/bundle-analyzer": "^12.0.10",
+		"@pothos/core": "^3.1.2",
+		"@pothos/plugin-dataloader": "^3.2.0",
+		"@pothos/plugin-errors": "^3.0.1",
+		"@pothos/plugin-prisma": "^0.16.3",
+		"@pothos/plugin-scope-auth": "^3.0.2",
+		"@pothos/plugin-simple-objects": "^3.0.1",
+		"@pothos/plugin-validation": "^3.0.1",
+		"@prisma/client": "^3.9.0",
+		"clsx": "^1.1.1",
+		"dataloader": "^2.0.0",
+		"date-fns": "^2.28.0",
+		"graphql": "^15.8.0",
+		"graphql-helix": "^1.11.0",
+		"hash-wasm": "^4.9.0",
+		"iron-session": "^6.0.5",
+		"next": "12.0.8",
+		"next-seo": "^5.1.0",
+		"nprogress": "^0.2.0",
+		"react": "17.0.2",
+		"react-dom": "17.0.2",
+		"react-hook-form": "^7.26.0",
+		"socket.io": "^4.4.1",
+		"socket.io-client": "^4.4.1",
+		"zod": "^3.11.6"
+	},
+	"devDependencies": {
+		"@graphql-codegen/cli": "^2.6.1",
+		"@graphql-codegen/near-operation-file-preset": "^2.2.4",
+		"@graphql-codegen/typescript": "^2.4.3",
+		"@graphql-codegen/typescript-operations": "^2.3.0",
+		"@types/node": "17.0.10",
+		"@types/nprogress": "^0.2.0",
+		"@types/react": "17.0.38",
+		"@typescript-eslint/eslint-plugin": "^5.12.0",
+		"autoprefixer": "^10.4.2",
+		"eslint": "^8.9.0",
+		"eslint-config-next": "^12.0.8",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-jest-dom": "^4.0.1",
+		"eslint-plugin-prettier": "^4.0.0",
+		"eslint-plugin-react": "^7.28.0",
+		"eslint-plugin-testing-library": "^5.0.5",
+		"husky": "^7.0.4",
+		"lint-staged": "^12.3.1",
+		"postcss": "^8.4.6",
+		"prettier": "^2.5.1",
+		"prisma": "^3.9.0",
+		"tailwindcss": "^3.0.22",
+		"trash-cli": "^5.0.0",
+		"ts-node": "^10.4.0",
+		"typescript": "^4.5.5"
+	},
+	"prisma": {
+		"seed": "ts-node --project ./prisma/tsconfig.json --transpile-only -r tsconfig-paths/register ./prisma/seed.ts"
+	},
+	"lint-staged": {
+		"*.{js,jsx,ts,tsx}": [
+			"eslint --fix",
+			"npx prettier --write"
+		],
+		"*.{json,md,yaml,yml,scss,css}": [
+			"npx prettier --write"
+		],
+		"*.js": "eslint --cache --fix"
+	}
+}

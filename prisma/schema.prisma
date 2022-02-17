@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  // Include binary targets for the native platform, as well as the platform for docker:
+  binaryTargets   = ["native", "debian-openssl-1.1.x"]
+  previewFeatures = ["filterJson", "fullTextSearch", "interactiveTransactions"]
+}
+
+generator pothos {
+  provider     = "prisma-pothos-types"
+  clientOutput = "@prisma/client"
+  output       = "./pothos-types.ts"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String @id @default(uuid())
+  username       String @unique @default(uuid())
+  email          String @unique
+  hashedPassword String
+  numberOfGames  Int    @default(0)
+  wins           Int    @default(0)
+  loses          Int    @default(0)
+  draws          Int    @default(0)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  session Session[]
+  games   Game[]
+
+  // Attributes
+  Move Move[]
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  expiresAt DateTime @default(now())
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Attributes
+  @@map("sessions")
+}
+
+model Game {
+  id        String  @id @default(uuid())
+  xPlayerId String
+  oPlayerId String
+  winnerId  String
+  loserId   String
+  isDraw    Boolean
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  players User[]
+  moves   Move[]
+
+  // Attributes
+  @@map("games")
+}
+
+model Move {
+  id       String @id @default(uuid())
+  position Int
+
+  // Timestamps
+  createdAt DateTime @default(now())
+
+  // Relations
+  gameId   String
+  game     Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  playerId String
+  player   User   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  // Attributes
+  @@map("moves")
+}

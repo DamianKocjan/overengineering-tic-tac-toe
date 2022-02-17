@@ -1,0 +1,26 @@
+{
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"extends": [
+		"prettier",
+		"plugin:react/recommended",
+		"plugin:testing-library/react",
+		"plugin:jest-dom/recommended",
+		"next",
+		"next/core-web-vitals"
+	],
+	"plugins": [
+		"react",
+		"jest-dom",
+		"testing-library",
+		"@typescript-eslint",
+		"prettier"
+	],
+
+	"env": {
+		"es6": true,
+		"browser": true,
+		"jest": true,
+		"node": true
+	}
+}

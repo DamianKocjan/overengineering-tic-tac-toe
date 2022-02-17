@@ -1,0 +1,74 @@
+input ChangePasswordInput {
+  currentPassword: String!
+  newPassword: String!
+}
+
+scalar DateTime
+
+input EditUserInput {
+  username: String
+}
+
+type Game {
+  createdAt: DateTime!
+  id: ID!
+  isDraw: Boolean!
+  loserId: String!
+  moves: [Move!]!
+  oPlayerId: String!
+  players: [User!]!
+  updatedAt: DateTime!
+  winnerId: String!
+  xPlayerId: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Move {
+  createdAt: DateTime!
+  game: Game!
+  gameId: String!
+  id: ID!
+  playerId: String!
+  position: Int!
+}
+
+type Mutation {
+  changePassword(input: ChangePasswordInput!): Result!
+  createGame: Game!
+  editUser(input: EditUserInput!): User!
+  login(input: LoginInput!): User!
+  logout: Result!
+  signUp(input: SignUpInput!): User!
+}
+
+type Query {
+  game(id: ID!): Game!
+  me: User
+  move(id: ID!): Move!
+  ranking(limit: Int! = 10, offset: Int! = 0): [User!]
+  user(id: ID!): User!
+}
+
+enum Result {
+  SUCCESS
+}
+
+input SignUpInput {
+  email: String!
+  password: String!
+  username: String!
+}
+
+type User {
+  draws: Int!
+  games(limit: Int! = 10, offset: Int! = 0): [Game!]!
+  id: ID!
+  loses: Int!
+  numberOfGames: Int!
+  username: String!
+  wins: Int!
+}
