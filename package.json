@@ -74,6 +74,9 @@
 		"ts-node": "^10.4.0",
 		"typescript": "^4.5.5"
 	},
+	"optionalDependencies": {
+		"fsevents": "^2.3.2"
+	},
 	"prisma": {
 		"seed": "ts-node --project ./prisma/tsconfig.json --transpile-only -r tsconfig-paths/register ./prisma/seed.ts"
 	},
