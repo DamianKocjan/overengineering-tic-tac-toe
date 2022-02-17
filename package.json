@@ -17,6 +17,7 @@
 		"codegen:graphql": "graphql-codegen",
 		"clean:codegen": "trash \"./src/**/__generated__/**\"",
 		"prettier:check": "prettier --check --config ./.prettierrc ./**/*.{ts,tsx,js,jsx}",
+		"typecheck": "tsc --noEmit",
 		"pre-commit": "lint-staged"
 	},
 	"dependencies": {
