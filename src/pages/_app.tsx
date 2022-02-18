@@ -1,4 +1,5 @@
 import { AppProps } from "next/app";
+import { ThemeProvider } from "next-themes";
 import { DefaultSeo } from "next-seo";
 import { ApolloProvider } from "@apollo/client";
 import { NProgress } from "@/components/NProgress";
@@ -10,13 +11,15 @@ function App({ Component, pageProps }: AppProps) {
 
 	return (
 		<ApolloProvider client={client}>
-			<DefaultSeo
-				defaultTitle="Tic Tac Toe"
-				titleTemplate="%s | Tic Tac Toe"
-				description="Tic Tac Toe game with NextJS, Prisma and GraphQL"
-			/>
-			<NProgress />
-			<Component {...pageProps} />
+			<ThemeProvider storageKey="preferred-theme" attribute="class">
+				<DefaultSeo
+					defaultTitle="Tic Tac Toe"
+					titleTemplate="%s | Tic Tac Toe"
+					description="Tic Tac Toe game with NextJS, Prisma and GraphQL"
+				/>
+				<NProgress />
+				<Component {...pageProps} />
+			</ThemeProvider>
 		</ApolloProvider>
 	);
 }
