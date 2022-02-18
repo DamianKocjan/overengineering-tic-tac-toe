@@ -6,9 +6,10 @@ import {
 	shouldRenderGraphiQL,
 } from "graphql-helix";
 import { NextApiHandler } from "next";
+import { withIronSessionApiRoute } from "iron-session/next";
 import { IncomingHttpHeaders } from "http";
 import { builder, Context, createGraphQLContext } from "@/graphql/index";
-import { resolveSession } from "@/lib/sessions";
+import { resolveSession, sessionOptions } from "@/lib/sessions";
 
 function getGraphQLCode(error: Error & { code?: number }) {
 	return error?.code ?? error?.name === "NotFoundError" ? 404 : null;
@@ -109,4 +110,4 @@ const handler: NextApiHandler = async (req, res) => {
 	}
 };
 
-export default handler;
+export default withIronSessionApiRoute(handler, sessionOptions);

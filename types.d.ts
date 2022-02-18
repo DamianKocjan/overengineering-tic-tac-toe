@@ -8,5 +8,7 @@ declare module "next" {
 }
 
 declare module "iron-session" {
-	interface IronSessionData extends Session {}
+	interface IronSessionData {
+		sessionID: string;
+	}
 }

@@ -2,7 +2,7 @@ import { Session, User } from "@prisma/client";
 import { addSeconds, differenceInSeconds } from "date-fns";
 import { IncomingMessage } from "http";
 import { GetServerSidePropsContext } from "next";
-import { IronSessionOptions, sealData, unsealData } from "iron-session";
+import { IronSessionOptions, IronSession, getIronSession } from "iron-session";
 
 import { prisma } from "./prisma";
 
@@ -14,6 +14,11 @@ const SESSION_TTL = 30 * 24 * 3600;
 
 // The key that we store the actual database ID of the session in
 const IRON_SESSION_ID_KEY = "sessionID";
+
+// Use a custom IncomingMessage type
+interface RequestWithSession extends IncomingMessage {
+	session: IronSession; // just for now
+}
 
 if (!process.env.COOKIE_SECRET) {
 	console.warn(
@@ -40,7 +45,7 @@ export const sessionOptions: IronSessionOptions = {
  * @param user - Session to be created for the given user
  * @returns session of the given user
  */
-export async function createSession(user: User) {
+export async function createSession(request: IncomingMessage, user: User) {
 	const session = await prisma.session.create({
 		data: {
 			userId: user.id,
@@ -51,7 +56,9 @@ export async function createSession(user: User) {
 		},
 	});
 
-	await sealData({ [IRON_SESSION_ID_KEY]: session.id }, sessionOptions);
+	const requestWithSession = request as unknown as RequestWithSession;
+	(requestWithSession as any).session = { [IRON_SESSION_ID_KEY]: session.id };
+	await requestWithSession.session.save();
 
 	return session;
 }
@@ -61,22 +68,30 @@ export async function createSession(user: User) {
  * @param request - HTTP request
  * @param session - Session in which need to be removed
  */
-export async function removeSession(session: Session) {
+export async function removeSession(
+	request: IncomingMessage,
+	session: Session,
+) {
+	const requestWithSession = request as unknown as RequestWithSession;
+	requestWithSession.session.destroy();
+
 	await prisma.session.delete({ where: { id: session!.id } });
 }
 
 const sessionCache = new WeakMap<IncomingMessage, Session | null>();
 
 export async function resolveSession(
-	{ req }: Pick<GetServerSidePropsContext, "req" | "res">,
+	{ req, res }: Pick<GetServerSidePropsContext, "req" | "res">,
 	checkOnboardStatus: boolean = false,
 ) {
 	if (sessionCache.has(req)) {
 		return sessionCache.get(req);
 	}
 
-	let session: Session | null = null;
-	const sessionID = await unsealData(IRON_SESSION_ID_KEY, sessionOptions);
+	let session: Session | any = null;
+	const requestWithSession = req as unknown as RequestWithSession;
+	const ironSession = await getIronSession(req, res, sessionOptions);
+	const sessionID = ironSession?.[IRON_SESSION_ID_KEY];
 
 	if (sessionID) {
 		session = await prisma.session.findFirst({
@@ -97,6 +112,8 @@ export async function resolveSession(
 					where: { id: session.id },
 					data: { expiresAt: addSeconds(new Date(), SESSION_TTL) },
 				});
+
+				await requestWithSession.session.save();
 			}
 		}
 	}

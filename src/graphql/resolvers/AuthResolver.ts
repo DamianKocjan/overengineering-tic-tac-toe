@@ -26,8 +26,8 @@ builder.queryField("me", (t) =>
 builder.mutationField("logout", (t) =>
 	t.field({
 		type: Result,
-		resolve: async (_root, _args, { session }) => {
-			await removeSession(session!);
+		resolve: async (_root, _args, { req, session }) => {
+			await removeSession(req, session!);
 			return Result.SUCCESS;
 		},
 	}),
@@ -62,7 +62,7 @@ builder.mutationField("login", (t) =>
 		},
 		resolve: (async (_query: any, _root: any, { input }: any, { req }: any) => {
 			const user = await authenticateUser(input.email, input.password);
-			await createSession(user);
+			await createSession(req, user);
 			return user;
 		}) as any,
 	}),
@@ -101,7 +101,7 @@ builder.mutationField("signUp", (t) =>
 		args: {
 			input: t.arg({ type: SignUpInput }),
 		},
-		resolve: (async (query: any, _root: any, { input }: any) => {
+		resolve: (async (query: any, _root: any, { input }: any, { req }: any) => {
 			const user = await prisma.user.create({
 				...query,
 				data: {
@@ -111,7 +111,7 @@ builder.mutationField("signUp", (t) =>
 				},
 			});
 
-			await createSession(user);
+			await createSession(req, user);
 
 			return user;
 		}) as any,
