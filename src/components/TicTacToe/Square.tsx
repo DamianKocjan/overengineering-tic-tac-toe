@@ -8,7 +8,7 @@ interface SquareProps {
 export const Square: React.FC<SquareProps> = ({ value, onClick }) => {
 	return (
 		<button
-			className="bg-white border border-solid border-gray-400 p-0 text-center float-left focus:outline-none"
+			className="bg-white dark:bg-gray-700 border border-solid border-gray-400 dark:border-gray-500 p-0 text-center float-left focus:outline-none"
 			onClick={() => {
 				onClick();
 				console.log("clicked");
@@ -27,7 +27,7 @@ export const Square: React.FC<SquareProps> = ({ value, onClick }) => {
 						cx="20"
 						cy="20"
 						r="12"
-						fill="#fff"
+						fill="transparent"
 						style={{ stroke: "#ea4335", strokeWidth: "1.7" }}
 					></circle>
 				</svg>

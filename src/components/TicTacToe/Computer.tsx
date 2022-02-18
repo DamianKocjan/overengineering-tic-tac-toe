@@ -130,7 +130,7 @@ export function Computer() {
 
 	return (
 		<Container title={`Round: ${round}`}>
-			<div className="grid grid-rows-3 grid-cols-3 h-72 w-72 mx-auto border-2 border-solid border-gray-400">
+			<div className="grid grid-rows-3 grid-cols-3 h-72 w-72 mx-auto border-2 border-solid border-gray-400 dark:border-gray-500">
 				{squares.map((square, i) => (
 					<Square value={square} onClick={() => handleClick(i)} key={i} />
 				))}
