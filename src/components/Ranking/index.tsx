@@ -1,4 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
+import { useCallback, useState } from "react";
 import { Button } from "../ui/Button";
 import { Container } from "../ui/Container";
 import { ErrorMessage } from "../ui/ErrorMessage";
@@ -21,6 +22,19 @@ export const query = gql`
 
 export function Ranking() {
 	const { data, loading, error, fetchMore } = useQuery<RankingQuery>(query);
+	const [loadMoreVisible, setLoadMoreVisibility] = useState(true);
+
+	const loadMore = useCallback(async () => {
+		const { data: moreData } = await fetchMore({
+			variables: {
+				offset: data?.ranking?.length || 0,
+			},
+		});
+
+		if ((moreData?.ranking?.length || 0) < 10) {
+			setLoadMoreVisibility(false);
+		}
+	}, [data, fetchMore]);
 
 	return (
 		<Container>
@@ -68,17 +82,9 @@ export function Ranking() {
 								</div>
 							</div>
 						))}
-						<Button
-							onClick={() =>
-								fetchMore({
-									variables: {
-										offset: data.ranking?.length || 0,
-									},
-								})
-							}
-						>
-							Load more
-						</Button>
+						{loadMoreVisible ? (
+							<Button onClick={loadMore}>Load more</Button>
+						) : null}
 					</div>
 				)}
 			</div>
