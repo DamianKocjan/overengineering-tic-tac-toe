@@ -18,8 +18,6 @@ interface Props {
 }
 
 export function ProfileInfo({ user }: Props) {
-	console.log(user);
-
 	const winRate = useMemo(
 		() => (user.wins + user.loses + user.draws) / user.numberOfGames,
 		[user],
