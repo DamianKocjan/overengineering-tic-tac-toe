@@ -1,4 +1,4 @@
-import { SquareState } from "./constants";
+import { SquareState } from "@/lib/ticTacToe";
 
 interface SquareProps {
 	value: SquareState;
@@ -9,10 +9,7 @@ export const Square: React.FC<SquareProps> = ({ value, onClick }) => {
 	return (
 		<button
 			className="bg-white dark:bg-gray-700 border border-solid border-gray-400 dark:border-gray-500 p-0 text-center float-left focus:outline-none"
-			onClick={() => {
-				onClick();
-				console.log("clicked");
-			}}
+			onClick={() => onClick()}
 		>
 			{value === SquareState.X ? (
 				<svg className="w-full h-full" viewBox="0 0 40 40">

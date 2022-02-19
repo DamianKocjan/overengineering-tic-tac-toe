@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { calculateWinner, COMBINATIONS, SquareState } from "@/lib/ticTacToe";
 import { Button } from "../ui/Button";
 import { Container } from "../ui/Container";
-import { COMBINATIONS, SquareState } from "./constants";
 import { Square } from "./Square";
 
 export function Computer() {
@@ -24,20 +24,6 @@ export function Computer() {
 			setIsTie(true);
 		}
 	}, [squares, xIsNext]);
-
-	const calculateWinner = (squares: SquareState[]) => {
-		for (let i = 0; i < COMBINATIONS.length; i++) {
-			const [a, b, c] = COMBINATIONS[i];
-			if (
-				squares[a] &&
-				squares[a] === squares[b] &&
-				squares[a] === squares[c]
-			) {
-				return squares[a];
-			}
-		}
-		return SquareState.Empty;
-	};
 
 	const handleClick = (i: number) => {
 		if (
