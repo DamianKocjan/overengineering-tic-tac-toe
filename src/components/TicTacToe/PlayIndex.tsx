@@ -37,9 +37,12 @@ export function PlayIndex() {
 				/>
 
 				<Button href="/game/play/computer">With computer</Button>
-				<Button href="" onClick={() => createGame()}>
+				<button
+					className="flex items-center justify-center px-4 py-2 w-full rounded font-medium focus:outline-none focus:ring-2 focus:ring-offset-white dark:focus:ring-offset-black focus:ring-offset-1 disabled:opacity-60 disabled:pointer-events-none hover:bg-opacity-80 bg-brand-500 text-white"
+					onClick={() => createGame()}
+				>
 					With friend
-				</Button>
+				</button>
 			</div>
 		</Container>
 	);
